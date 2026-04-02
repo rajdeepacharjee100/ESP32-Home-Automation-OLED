@@ -21,46 +21,6 @@ Power Supply
 Working Principle
 The ESP32 connects to a WiFi network and communicates with the SinricPro cloud platform. When a user gives a voice command through Google Assistant, the command is sent to SinricPro. The cloud then triggers the ESP32 to switch the relay ON or OFF. The OLED display shows the current status of the device.
 
-Code
-
-#include <WiFi.h>
-#include <SinricPro.h>
-#include <SinricProSwitch.h>
-
-#define RELAY_PIN 26
-
-const char* WIFI_SSID = "Your_WiFi_Name";
-const char* WIFI_PASS = "Your_WiFi_Password";
-
-#define APP_KEY "YOUR_APP_KEY"
-#define APP_SECRET "YOUR_APP_SECRET"
-#define DEVICE_ID "YOUR_DEVICE_ID"
-
-bool onPowerState(const String &deviceId, bool &state) {
-Serial.printf("Device %s turned %s\n", deviceId.c_str(), state ? "ON" : "OFF");
-digitalWrite(RELAY_PIN, state ? LOW : HIGH);
-return true;
-}
-
-void setup() {
-Serial.begin(115200);
-pinMode(RELAY_PIN, OUTPUT);
-digitalWrite(RELAY_PIN, HIGH);
-
-WiFi.begin(WIFI_SSID, WIFI_PASS);
-while (WiFi.status() != WL_CONNECTED) {
-delay(500);
-}
-
-SinricProSwitch& mySwitch = SinricPro[DEVICE_ID];
-mySwitch.onPowerState(onPowerState);
-
-SinricPro.begin(APP_KEY, APP_SECRET);
-}
-
-void loop() {
-SinricPro.handle();
-}
 
 How to Use
 Create an account on SinricPro
@@ -78,7 +38,10 @@ Learning Outcomes
 Understanding of IoT cloud platforms
 ESP32 WiFi communication
 Relay interfacing with real world devices
+![WhatsApp Image 2026-04-02 at 8 05 11 PM](https://github.com/user-attachments/assets/4e84c060-81ce-4022-b84e-c25b88d2266e)
+
 Voice assistant integration
+
 Practical embedded system development
 
 Future Improvements
